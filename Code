@@ -1,0 +1,40 @@
+import os
+import requests
+import datetime
+import time
+import random
+
+BOT_ID = 'A9bq4seaz7S92rAGLgaFp0JBoMGjuTsC8cDdVc3p'
+BOT_NAME = 'HuttBot'
+GROUP_ID = '92206786'
+API_URL = 'https://api.groupme.com/v3/bots/post'
+
+def send_message(text):
+    data = {
+        'bot_id': BOT_ID,
+        'text': text,
+        'attachments': []
+    }
+    response = requests.post(API_URL, json=data)
+
+def get_weather():
+    url = 'http://api.weatherstack.com/current'
+    params = {
+        'access_key': '8ca7c87344cf60eb1890351455fbc8c5',
+        'query': 'Lawrence',
+        'units': 'f',
+        'language': 'en'
+    }
+    response = requests.get(url, params=params).json()
+    low = response['current']['temperature'] - 10
+    high = response['current']['temperature'] + 10
+    return low, high
+
+def get_menu(day):
+    breakfast_options = ['omelette', 'waffles', 'pancakes', 'croissant sandwich']
+    lunch_options = ['chicken sandwich', 'taco salad', 'grilled cheese', 'chicken noodle soup']
+    dinner_options = ['beef stroganoff', 'pasta primavera', 'vegetable stir-fry', 'chicken parmesan']
+    breakfast = random.choice(breakfast_options)
+    lunch = random.choice(lunch_options)
+    dinner = random.choice(dinner_options)
+    return f'{day.capitalize()}:\nBreakfast is {breakfast}\nLunch is {lunch}\nDinner is {dinner}'
